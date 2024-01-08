@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from domain.langchain import langchain_router
+from domain.gemini import gemini_router
 
 description = """
 
@@ -41,3 +42,4 @@ app = FastAPI(
 )
 
 app.include_router(langchain_router.router)
+app.include_router(gemini_router.router)
