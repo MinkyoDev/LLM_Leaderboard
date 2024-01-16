@@ -5,7 +5,6 @@ from domain.gemini import gemini_router
 
 description = """
 
-
 ## Chatbot
 
 기능 목록:
@@ -25,6 +24,10 @@ tags_metadata = [
         "description": "npc와 user간의 대화를 위한 API입니다.",
     },
     {
+        "name": "conversation_between_npcs",
+        "description": "npc와 npc간의 대화를 생성해 주는 API입니다.",
+    },
+        {
         "name": "conversation_between_npcs",
         "description": "npc와 npc간의 대화를 생성해 주는 API입니다.",
     },

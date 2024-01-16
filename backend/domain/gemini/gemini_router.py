@@ -23,7 +23,7 @@ async def intro_generator(generator_schema: GeneratorSchema):
                 raise HTTPException(status_code=400, detail=f"Unexpected finish reason: {finish_reason}")
             break
         except IndexError as e:
-            print("#"*10 + "I got IndexError...Try again!" + "#"*10)
+            print("#"*10 + "I got IndexError...Try again!" + e + "#"*10)
 
     final_response = {
         "answer": answer, 
