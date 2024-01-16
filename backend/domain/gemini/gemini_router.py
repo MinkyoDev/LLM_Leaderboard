@@ -11,8 +11,8 @@ router = APIRouter(
 
 @router.post("/gemini", 
              description="Gemini를 이용한 챗봇입니다.", 
-             tags=["conversation_with_user"])
-async def intro_generator(generator_schema: GeneratorSchema):
+             tags=["LLMs"])
+async def gemini_generator(generator_schema: GeneratorSchema):
     print(f"input : {generator_schema.content}")
     # print(f"model : {generator_schema.model}")
     
