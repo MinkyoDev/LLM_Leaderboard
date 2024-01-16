@@ -1,7 +1,7 @@
 # Backend
 
 # Security
-resources/secret/
+backend/resources/secret/
 .env
 
 # etc
