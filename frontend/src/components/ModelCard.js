@@ -1,6 +1,6 @@
 // src/components/ModelCard.js
 import React, { useState, useEffect } from 'react';
-import { MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon  } from 'mdbreact';
 
 const ModelCard = ({ id, type, onRemove, onModelChange, modelOptions }) => {
   const [selectedModel, setSelectedModel] = useState('');
@@ -13,18 +13,39 @@ const ModelCard = ({ id, type, onRemove, onModelChange, modelOptions }) => {
     }
   }, [id, modelOptions, onModelChange, selectedModel]);
 
-  const handleModelChange = (e) => {
-    const newModel = e.target.value;
+  const handleModelChange = (newModel) => {
     setSelectedModel(newModel);
     onModelChange(id, newModel);
   };
 
   return (
-    <MDBCard style={{ width: "22rem", marginTop: "1rem" }}>
+      <MDBCard style={{ margin: "1rem" }}>
       <MDBCardBody>
         <h3>{type}</h3>
-        {/* 드롭다운과 버튼 */}
-        <MDBBtn color="danger" onClick={() => onRemove(id)}>Remove</MDBBtn>
+        <MDBDropdown>
+          <MDBDropdownToggle style={{ fontSize: '0.8rem', padding: '5px 10px', minWidth: '150px' }} caret color="light">
+            {selectedModel}
+          </MDBDropdownToggle>
+          <MDBDropdownMenu basic>
+            {modelOptions.map((model, index) => (
+          <MDBDropdownItem key={index} onClick={() => handleModelChange(model)}>
+            {model}
+          </MDBDropdownItem>
+          ))}
+          </MDBDropdownMenu>
+        </MDBDropdown>
+        <MDBBtn color="white" style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  padding: "5px 10px",
+                  boxShadow: "none",
+                  color: "grey",
+                }}
+                size="sm"
+                onClick={() => onRemove(id)}>
+          <MDBIcon icon="times" />
+        </MDBBtn>
       </MDBCardBody>
     </MDBCard>
   );

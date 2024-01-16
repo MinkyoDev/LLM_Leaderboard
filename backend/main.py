@@ -1,5 +1,7 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
+from domain.management import management_router
 from domain.langchain import langchain_router
 from domain.gemini import gemini_router
 
@@ -16,20 +18,12 @@ description = """
 
 tags_metadata = [
     {
-        "name": "hello",
-        "description": "기본적인 연결 테스트를 위한 \"Hello, World!\" API입니다.",
+        "name": "LLMs",
+        "description": "LLM에서 답변을 받기 위한 API입니다.",
     },
     {
-        "name": "conversation_with_user",
-        "description": "npc와 user간의 대화를 위한 API입니다.",
-    },
-    {
-        "name": "conversation_between_npcs",
-        "description": "npc와 npc간의 대화를 생성해 주는 API입니다.",
-    },
-        {
-        "name": "conversation_between_npcs",
-        "description": "npc와 npc간의 대화를 생성해 주는 API입니다.",
+        "name": "management",
+        "description": "부가 기능들을 위한 API입니다.",
     },
 ]
 
@@ -44,5 +38,15 @@ app = FastAPI(
     openapi_tags=tags_metadata
 )
 
+# Add CORS Middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 모든 오리진 허용
+    allow_credentials=True,
+    allow_methods=["*"],  # 모든 HTTP 메소드 허용
+    allow_headers=["*"],  # 모든 HTTP 헤더 허용
+)
+
+app.include_router(management_router.router)
 app.include_router(langchain_router.router)
 app.include_router(gemini_router.router)
