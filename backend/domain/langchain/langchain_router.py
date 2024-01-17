@@ -18,13 +18,20 @@ async def langchain_generator(generator_schema: GeneratorSchema):
     
     while True:
         try:
-            answer = chains.chatbot_(generator_schema.content, generator_schema.model)
+            answer, tokens, execution_time = await chains.chatbot_(generator_schema.content, generator_schema.model)
             break
         except IndexError as e:
             print("#"*10 + "I got IndexError...Try again!" + "#"*10)
 
     final_response = {
-        "answer": answer, 
+        "answer": {
+            "text": answer["text"], 
+            "tokens": tokens, 
+            "executionTime": execution_time, 
+        }
     }
-    print(f"answer : {answer}")
+    # print(f"answer : {answer}")
+    # print(f"tokens : {tokens}")
+    # print(f"execution_time : {execution_time}")
+    print(final_response)
     return final_response

@@ -13,6 +13,7 @@ router = APIRouter(
              tags=["management"])
 async def API_test(test_schema: testSchema):
     print(f"input : {test_schema.content}")
+    print(f"model : {test_schema.model}")
 
     final_response = {
         "answer": test_schema.content, 
