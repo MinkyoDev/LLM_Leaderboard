@@ -14,19 +14,21 @@ router = APIRouter(
              tags=["LLMs"])
 async def gemini_generator(generator_schema: GeneratorSchema):
     print(f"input : {generator_schema.content}")
-    # print(f"model : {generator_schema.model}")
+    print(f"model : {generator_schema.model}")
     
     while True:
         try:
-            answer, finish_reason = gemini.chat_gemini(generator_schema.content)
-            if finish_reason != "STOP":
-                raise HTTPException(status_code=400, detail=f"Unexpected finish reason: {finish_reason}")
+            answer, tokens, execution_time = await gemini.chat_gemini(generator_schema.content, generator_schema.model)
             break
         except IndexError as e:
-            print("#"*10 + "I got IndexError...Try again!" + e + "#"*10)
+            print("#"*10 + "I got IndexError...Try again!" + str(e) + "#"*10)
 
     final_response = {
-        "answer": answer, 
+        "answer": {
+            "text": answer, 
+            "tokens": tokens, 
+            "executionTime": execution_time, 
+        }
     }
-    print(f"answer : {answer}")
+    print(final_response)
     return final_response

@@ -1,33 +1,61 @@
 // src/components/GenerateButton.js
-
 import React from 'react';
 import { MDBBtn } from 'mdbreact';
 
-const GenerateButton = ({ content }) => {
+const GenerateButton = ({ content, models, updateModelResponse, handleGenerate }) => {
   const handleSubmit = async () => {
-    const url = "http://127.0.0.1:8000/api/management/test";
-    const data = { content };
+    if (!content.trim()) {
+      alert("Content cannot be empty.");
+      return;
+    }
 
-    try {
-      const response = await fetch(url, {
+    handleGenerate();
+
+    if (!models || models.length === 0) {
+      alert("No models available.");
+      return;
+    }
+
+    const fetchPromises = models.map(model => {
+      let url;
+      if (model.type === "Langchain") {
+        url = "http://127.0.0.1:8000/api/chatbot/langchain";
+      } else if (model.type === "Gemini") {
+        url = "http://127.0.0.1:8000/api/chatbot/gemini";
+      } else {
+        return Promise.resolve();
+      }
+
+      const data = { content: content, model: model.model };
+
+      console.log(`Sending request to model ${model.id}`); // 요청 보내기 전에 로그 찍기
+
+      return fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(jsonResponse => {
+        console.log(`Received response from model ${model.id}`);
+        updateModelResponse(model.id, jsonResponse);
+      })
+      .catch(error => {
+        console.error(`Error in model ${model.id}: ${error.message}`);
+        updateModelResponse(model.id, { error: error.message });
       });
+    });
 
-      if (!response.ok) {
-        throw new Error(`Request failed: ${response.status} ${response.statusText}`);
-      }
-
-      const jsonResponse = await response.json();
-      console.log(jsonResponse); // 응답 처리
-    } catch (error) {
-      alert(`Network error: ${error.message}`); // 에러 메시지를 팝업으로 표시
-    }
+    await Promise.all(fetchPromises);
   };
-
+    
   return (
     <MDBBtn color="primary" onClick={handleSubmit}>
       Generate
@@ -36,3 +64,4 @@ const GenerateButton = ({ content }) => {
 };
 
 export default GenerateButton;
+
