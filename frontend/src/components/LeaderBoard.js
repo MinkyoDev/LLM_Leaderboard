@@ -28,9 +28,11 @@ const LeaderBoard = () => {
 
     const initializeModels = (options) => {
         const initialModels = Object.entries(options).map(([type, models], index) => ({
-            id: index + 1,
+            id: index,
             type,
-            model: models[0]
+            model: models[0],
+            response: '',
+            isLoading: false
         }));
         setModels(initialModels);
     };
@@ -40,7 +42,8 @@ const LeaderBoard = () => {
         const newModel = { 
             id: newId, 
             type: modelType, 
-            model: modelOptions[modelType][0]
+            model: modelOptions[modelType][0],
+            response: ''
         };
         setModels([...models, newModel]);
     };
@@ -57,6 +60,17 @@ const LeaderBoard = () => {
 
     const handlePromptChange = (value) => {
         setPrompt(value);
+    };
+
+    const updateModelResponse = (modelId, response) => {
+        console.log(response);
+        setModels(prevModels => prevModels.map(model => 
+            model.id === modelId ? { ...model, response: response.answer, isLoading: false } : model
+        ));
+    };
+
+    const handleGenerate = () => {
+        setModels(models.map(model => ({ ...model, isLoading: true })));
     };
 
     return (
@@ -79,14 +93,21 @@ const LeaderBoard = () => {
                             key={model.id}
                             id={model.id}
                             type={model.type}
+                            response={model.response}
                             onRemove={removeModel}
                             onModelChange={handleModelChange}
                             modelOptions={modelOptions[model.type]}
+                            isLoading={model.isLoading}
                         />
                     ))}
                     <MDBRow>
                         <MDBCol className="text-center my-4">
-                        <GenerateButton content={prompt} />
+                        <GenerateButton 
+                            content={prompt} 
+                            models={models} 
+                            updateModelResponse={updateModelResponse}
+                            handleGenerate={handleGenerate}
+                        />
                     </MDBCol>
                 </MDBRow>
             </MDBCol>
