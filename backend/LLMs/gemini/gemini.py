@@ -1,4 +1,5 @@
 import google.generativeai as genai
+import google.api_core.exceptions
 from pathlib import Path
 import time, os, dotenv
 
@@ -26,13 +27,22 @@ async def execute_conversation(prompts, model_name, key):
         response = response.text
 
         prompt_tokens = model.count_tokens(prompts).total_tokens
-        completion_tokens = model.count_tokens(response.text).total_tokens
-    except:
+        completion_tokens = model.count_tokens(response).total_tokens
+    except RuntimeError as e:
         response = "Incorrect API key provided"
         prompt_tokens = 0
         completion_tokens = 0
         safety_ratings = None
-
+    except google.api_core.exceptions.InvalidArgument as e:
+        response = e.message
+        prompt_tokens = 0
+        completion_tokens = 0
+        safety_ratings = None
+    except Exception as e:
+        response = "Unknown error"
+        prompt_tokens = 0
+        completion_tokens = 0
+        safety_ratings = None
 
     tokens = {"totalTokens": prompt_tokens + completion_tokens, 
             "promptTokens": prompt_tokens, 
@@ -46,8 +56,6 @@ async def execute_conversation(prompts, model_name, key):
 
 
 async def chat_gemini(prompts: str, model_name: str, key: str):
-    
-
     response, tokens, execution_time, safety_ratings = await execute_conversation(prompts, model_name, key)
 
     if safety_ratings:

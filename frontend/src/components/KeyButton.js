@@ -1,5 +1,5 @@
 // src/components/KeyButton.js
-import React, { useState } from 'react';
+import React from 'react';
 import { MDBBtn, MDBModal, MDBModalBody, MDBIcon, MDBInput } from 'mdbreact';
 
 const KeyButton = ({ openAIKey, setOpenAIKey, googleAPIKey, setGoogleAPIKey }) => {
@@ -8,7 +8,6 @@ const KeyButton = ({ openAIKey, setOpenAIKey, googleAPIKey, setGoogleAPIKey }) =
     const toggleModal = () => {
         setModal(!modal);
     };
-
 
     return (
         <>
