@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 from domain.management import management_router
 from domain.langchain import langchain_router
@@ -7,13 +8,11 @@ from domain.gemini import gemini_router
 
 description = """
 
-## Chatbot
-
 기능 목록:
 
 * **Say Hello** (_completely implemented_).
-* **Conversation with User** (_not implemented_).
-* **Conversation between Npcs** (_not implemented_).
+* **LLMs** (_not implemented_).
+* **Management** (_not implemented_).
 """
 
 tags_metadata = [
@@ -50,3 +49,7 @@ app.add_middleware(
 app.include_router(management_router.router)
 app.include_router(langchain_router.router)
 app.include_router(gemini_router.router)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=9091, reload=False)

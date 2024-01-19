@@ -1,11 +1,26 @@
 // src/App.js
-import React from 'react';
+import React, { useState } from 'react';
 import LeaderBoard from './components/LeaderBoard';
+import KeyButton from './components/KeyButton';
 
 const App = () => {
+  const [openAIKey, setOpenAIKey] = useState('');
+  const [googleAPIKey, setGoogleAPIKey] = useState('');
+
   return (
     <div className="App">
-      <LeaderBoard />
+      <LeaderBoard 
+        openAIKey={openAIKey} 
+        googleAPIKey={googleAPIKey}
+        setOpenAIKey={setOpenAIKey}
+        setGoogleAPIKey={setGoogleAPIKey}
+      />
+      <KeyButton
+        openAIKey={openAIKey}
+        setOpenAIKey={setOpenAIKey}
+        googleAPIKey={googleAPIKey}
+        setGoogleAPIKey={setGoogleAPIKey}
+      />
     </div>
   );
 }

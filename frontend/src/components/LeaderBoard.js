@@ -7,7 +7,7 @@ import AddModelDropdown from './AddModelDropdown';
 import fetchModelOptions from '../utils/fetchModelOptions';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
-const LeaderBoard = () => {
+const LeaderBoard = ({ openAIKey, googleAPIKey }) => {
     const [modelOptions, setModelOptions] = useState({});
     const [models, setModels] = useState([]);
     const [prompt, setPrompt] = useState('');
@@ -107,6 +107,8 @@ const LeaderBoard = () => {
                             models={models} 
                             updateModelResponse={updateModelResponse}
                             handleGenerate={handleGenerate}
+                            openAIKey={openAIKey}
+                            googleAPIKey={googleAPIKey}
                         />
                     </MDBCol>
                 </MDBRow>
