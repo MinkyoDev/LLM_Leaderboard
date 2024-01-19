@@ -4,7 +4,7 @@ import PromptInput from './PromptInput';
 import ModelCard from './ModelCard';
 import GenerateButton from './GenerateButton';
 import AddModelDropdown from './AddModelDropdown';
-import fetchModelOptions from '../utils/fetchModelOptions';
+import { fetchModelOptions } from '../services/apiService';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
 const LeaderBoard = ({ openAIKey, googleAPIKey }) => {

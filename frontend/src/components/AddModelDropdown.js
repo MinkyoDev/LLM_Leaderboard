@@ -1,6 +1,6 @@
 // src/components/AddModelDropdown.js
 import React, { useState } from 'react';
-import { MDBBtn, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
+import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from 'mdbreact';
 
 const AddModelDropdown = ({ onAddModel, modelOptions }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

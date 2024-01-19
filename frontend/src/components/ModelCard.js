@@ -6,7 +6,6 @@ const ModelCard = ({ id, type, response, onRemove, onModelChange, modelOptions, 
   const [selectedModel, setSelectedModel] = useState('');
 
   useEffect(() => {
-    // 초기 모델 설정
     if (modelOptions && modelOptions.length > 0 && selectedModel === '') {
       const initialModel = modelOptions[0];
       setSelectedModel(initialModel);
