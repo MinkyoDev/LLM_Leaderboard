@@ -8,14 +8,17 @@ from LLMs.langchain import prompts
 
 dotenv_file = dotenv.find_dotenv(str(Path("./").absolute().joinpath(".env")))
 dotenv.load_dotenv(dotenv_file)
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-
+MY_KEY = os.environ["MY_KEY"]
 
 async def execute_conversation(chain_predict, inputs):
     start_time = time.time()
-
+    
     with get_openai_callback() as cb:
-        response = await chain_predict.ainvoke(input=inputs)
+        try:
+            response = await chain_predict.ainvoke(input=inputs)
+        except Exception as e:
+            response = {"text": "Incorrect API key provided"}
+
         tokens = {"totalTokens": cb.total_tokens, 
                   "promptTokens": cb.prompt_tokens, 
                   "completionTokens": cb.completion_tokens,
@@ -26,7 +29,14 @@ async def execute_conversation(chain_predict, inputs):
 
     return response, tokens, execution_time
 
-async def chatbot_(inputs: str, model: str) -> str:
+async def chatbot_(inputs: str, model: str, key: str) -> str:
+    if key == MY_KEY:
+        OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+    elif not key:
+        OPENAI_API_KEY = "None"
+    else:
+        OPENAI_API_KEY = key
+
     llm = ChatOpenAI(model=model, openai_api_key=OPENAI_API_KEY)
 
     chatbot = LLMChain(

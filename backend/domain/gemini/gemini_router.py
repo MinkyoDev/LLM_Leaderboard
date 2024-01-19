@@ -15,10 +15,14 @@ router = APIRouter(
 async def gemini_generator(generator_schema: GeneratorSchema):
     print(f"input : {generator_schema.content}")
     print(f"model : {generator_schema.model}")
+    print(f"secretKey : {generator_schema.secretKey}")
     
     while True:
         try:
-            answer, tokens, execution_time = await gemini.chat_gemini(generator_schema.content, generator_schema.model)
+            answer, tokens, execution_time = await gemini.chat_gemini(
+                generator_schema.content, 
+                generator_schema.model, 
+                generator_schema.secretKey)
             break
         except IndexError as e:
             print("#"*10 + "I got IndexError...Try again!" + str(e) + "#"*10)
