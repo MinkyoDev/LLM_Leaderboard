@@ -54,7 +54,7 @@ const ModelCard = ({ id, type, response, onRemove, onModelChange, modelOptions, 
                 backgroundColor: '#fff',
                 padding: '0 10px'
               }}>
-                <h7>Answer</h7>
+                <h6>Answer</h6>
               </div>
               {!isLoading && response && (
                 <MDBCardBody>
@@ -73,7 +73,7 @@ const ModelCard = ({ id, type, response, onRemove, onModelChange, modelOptions, 
                 backgroundColor: '#fff',
                 padding: '0 10px'
               }}>
-                <h7>Infomation</h7>
+                <h6>Infomation</h6>
               </div>
               {!isLoading && response && (
                 <MDBCardBody>

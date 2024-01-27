@@ -4,25 +4,27 @@ import LeaderBoard from './components/LeaderBoard';
 import KeyButton from './components/KeyButton';
 
 const App = () => {
-  const [openAIKey, setOpenAIKey] = useState('');
-  const [googleAPIKey, setGoogleAPIKey] = useState('');
+  const [apiKeys, setApiKeys] = useState({
+    openAIKey: '',
+    googleAPIKey: '',
+  });
+
+  const handleKeyChange = (keyName, keyValue) => {
+    setApiKeys(prevKeys => ({
+      ...prevKeys,
+      [keyName]: keyValue
+    }));
+  };
 
   return (
     <div className="App">
-      <LeaderBoard 
-        openAIKey={openAIKey} 
-        googleAPIKey={googleAPIKey}
-        setOpenAIKey={setOpenAIKey}
-        setGoogleAPIKey={setGoogleAPIKey}
-      />
+      <LeaderBoard apiKeys={apiKeys} />
       <KeyButton
-        openAIKey={openAIKey}
-        setOpenAIKey={setOpenAIKey}
-        googleAPIKey={googleAPIKey}
-        setGoogleAPIKey={setGoogleAPIKey}
+        apiKeys={apiKeys}
+        setKeyChange={handleKeyChange}
       />
     </div>
   );
-}
+};
 
 export default App;

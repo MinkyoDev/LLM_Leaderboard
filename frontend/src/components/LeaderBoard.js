@@ -7,10 +7,11 @@ import AddModelDropdown from './AddModelDropdown';
 import { fetchModelOptions } from '../services/apiService';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
-const LeaderBoard = ({ openAIKey, googleAPIKey }) => {
+const LeaderBoard = ({ apiKeys }) => {
     const [modelOptions, setModelOptions] = useState({});
     const [models, setModels] = useState([]);
     const [prompt, setPrompt] = useState('');
+    const [apiUrls, setApiUrls] = useState({});
 
     useEffect(() => {
         const getModelOptions = async () => {
@@ -18,19 +19,25 @@ const LeaderBoard = ({ openAIKey, googleAPIKey }) => {
                 const options = await fetchModelOptions();
                 setModelOptions(options);
                 initializeModels(options);
+    
+                const urls = {};
+
+                for (const type in options) {
+                    urls[type] = options[type].api;
+                }
+                setApiUrls(urls);
             } catch (error) {
                 console.error("Error fetching model options:", error);
             }
         };
-
         getModelOptions();
     }, []);
 
     const initializeModels = (options) => {
-        const initialModels = Object.entries(options).map(([type, models], index) => ({
+        const initialModels = Object.entries(options).map(([type, data], index) => ({
             id: index,
             type,
-            model: models[0],
+            model: data.models[0],
             response: '',
             isLoading: false
         }));
@@ -96,7 +103,7 @@ const LeaderBoard = ({ openAIKey, googleAPIKey }) => {
                             response={model.response}
                             onRemove={removeModel}
                             onModelChange={handleModelChange}
-                            modelOptions={modelOptions[model.type]}
+                            modelOptions={modelOptions[model.type].models}
                             isLoading={model.isLoading}
                         />
                     ))}
@@ -107,8 +114,8 @@ const LeaderBoard = ({ openAIKey, googleAPIKey }) => {
                             models={models} 
                             updateModelResponse={updateModelResponse}
                             handleGenerate={handleGenerate}
-                            openAIKey={openAIKey}
-                            googleAPIKey={googleAPIKey}
+                            apiKeys={apiKeys}
+                            apiUrls={apiUrls}
                         />
                     </MDBCol>
                 </MDBRow>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { MDBBtn, MDBModal, MDBModalBody, MDBIcon, MDBInput } from 'mdbreact';
 
-const KeyButton = ({ openAIKey, setOpenAIKey, googleAPIKey, setGoogleAPIKey }) => {
+const KeyButton = ({ apiKeys, setKeyChange }) => {
     const [modal, setModal] = React.useState(false);
 
     const toggleModal = () => {
@@ -31,8 +31,8 @@ const KeyButton = ({ openAIKey, setOpenAIKey, googleAPIKey, setGoogleAPIKey }) =
                             <MDBInput 
                                 style={{ flex: 1, width: '100%' }} 
                                 label="OPENAI_API_KEY"
-                                value={openAIKey}
-                                onChange={(e) => setOpenAIKey(e.target.value)}
+                                value={apiKeys.openAIKey}
+                                onChange={(e) => setKeyChange('openAIKey', e.target.value)}
                             />
                         </div>
                     </div>
@@ -42,8 +42,8 @@ const KeyButton = ({ openAIKey, setOpenAIKey, googleAPIKey, setGoogleAPIKey }) =
                             <MDBInput 
                                 style={{ flex: 1, width: '100%' }} 
                                 label="GOOGLE_API_KEY"
-                                value={googleAPIKey}
-                                onChange={(e) => setGoogleAPIKey(e.target.value)}
+                                value={apiKeys.googleAPIKey}
+                                onChange={(e) => setKeyChange('googleAPIKey', e.target.value)}
                             />
                         </div>
                     </div>

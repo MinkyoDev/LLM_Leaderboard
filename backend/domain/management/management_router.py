@@ -26,7 +26,17 @@ async def API_test(test_schema: testSchema):
              tags=["management"])
 async def model_list():
     final_response = {
-        "Langchain": ["gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"], 
-        "Gemini": ["gemini-pro"], 
+        "Langchain": {
+            "models": ["gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"],
+            "api": '/api/chatbot/langchain'
+            }, 
+        # "Gemini": {
+        #     "models": ["gemini"],
+        #     "api": '/api/chatbot/gemini'
+        #     }, 
+        "OpenAI": {
+            "models": ["gpt-3.5-turbo-1106", "gpt-4", "gpt-4-1106-preview"],
+            "api": '/api/chatbot/openai'
+            }, 
     }
     return final_response

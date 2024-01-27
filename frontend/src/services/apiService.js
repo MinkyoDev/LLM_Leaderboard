@@ -15,39 +15,40 @@ export const fetchModelOptions = async () => {
     }
 };
 
-export const sendRequestToModel = async (model, content, openAIKey, googleAPIKey) => {
-    let url;
-    let secretKey = '';
-  
-    if (model.type === "Langchain") {
-      url = `${BASE_URL}/api/chatbot/langchain`;
-      secretKey = openAIKey;
-    } else if (model.type === "Gemini") {
-      url = `${BASE_URL}/api/chatbot/gemini`;
-      secretKey = googleAPIKey;
-    } else {
-      return Promise.resolve();
-    }
-  
-    const data = { content: content, model: model.model, secretKey: secretKey };
-  
-    console.log(`Sending request to model ${model.id}`);
-  
-    return fetch(url, {
+export const sendRequestToModel = async (model, content, apiKeys, apiUrls) => {
+  const url = `${BASE_URL}${apiUrls}`;
+
+  let key = '';
+  if (model.type === "Langchain") {
+      key = apiKeys.openAIKey;
+  } else if (model.type === "Gemini") {
+      key = apiKeys.googleAPIKey;
+  } else if (model.type === "OpenAI") {
+      key = apiKeys.openAIKey;
+  }
+  // 여기서 model.type에 따라 다른 키를 추가할 수 있습니다.
+
+  const data = {
+      content: content,
+      model: model.model,
+      secretKey: key // 'key' 항목 추가
+  };
+
+  return fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    })
-    .then(response => {
+  })
+  .then(response => {
       if (!response.ok) {
-        throw new Error(`Request failed: ${response.status} ${response.statusText}`);
+          throw new Error(`Request failed: ${response.status} ${response.statusText}`);
       }
       return response.json();
-    })
-    .catch(error => {
+  })
+  .catch(error => {
       console.error(`Error in model ${model.id}: ${error.message}`);
       throw error;
-    });
-  };
+  });
+};
