@@ -5,6 +5,7 @@ import uvicorn
 from domain.management import management_router
 from domain.langchain import langchain_router
 from domain.gemini import gemini_router
+from domain.openai import openai_router
 
 description = """
 
@@ -49,6 +50,7 @@ app.add_middleware(
 app.include_router(management_router.router)
 app.include_router(langchain_router.router)
 app.include_router(gemini_router.router)
+app.include_router(openai_router.router)
 
 
 if __name__ == "__main__":

@@ -2,11 +2,8 @@ import React from 'react';
 import { MDBBtn } from 'mdbreact';
 import { sendRequestToModel } from '../services/apiService';
 
-const GenerateButton = ({ content, models, updateModelResponse, handleGenerate, openAIKey, googleAPIKey }) => {
+const GenerateButton = ({ content, models, updateModelResponse, handleGenerate, apiKeys, apiUrls }) => {
   const handleSubmit = async () => {
-    console.log(`OpenAI Key: ${openAIKey}`);
-    console.log(`Google API Key: ${googleAPIKey}`);
-
     if (!content.trim()) {
       alert("Content cannot be empty.");
       return;
@@ -20,7 +17,7 @@ const GenerateButton = ({ content, models, updateModelResponse, handleGenerate, 
     }
 
     const fetchPromises = models.map(model => {
-      return sendRequestToModel(model, content, openAIKey, googleAPIKey)
+      return sendRequestToModel(model, content, apiKeys, apiUrls[model.type])
         .then(jsonResponse => {
           console.log(`Received response from model ${model.id}`);
           updateModelResponse(model.id, jsonResponse);
