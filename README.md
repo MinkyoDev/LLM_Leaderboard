@@ -7,6 +7,7 @@ LLM의 답변 생성 결과와 생성 시간을 한눈에 볼 수 있는 리더�
 ## 1. Langchain
 
 <br/>
+
 ## 2. Openai API
 
 [openai stream](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_stream_completions.ipynb)
