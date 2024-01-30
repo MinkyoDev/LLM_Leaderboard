@@ -1,5 +1,5 @@
 import openai
-from openai import OpenAI
+from openai import AsyncOpenAI
 from pathlib import Path
 import dotenv, os, time
 
@@ -9,7 +9,7 @@ dotenv.load_dotenv(dotenv_file)
 MY_KEY = os.environ["MY_KEY"]
 
 
-def openai_api(inputs: str, model: str, key: str):
+async def openai_api(inputs: str, model: str, key: str):
     if key == MY_KEY:
         OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
     elif not key:
@@ -19,16 +19,17 @@ def openai_api(inputs: str, model: str, key: str):
 
     start_time = time.time()
 
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
     try:
-        response = client.chat.completions.create(
+        response = await client.chat.completions.create(
             model=model,
             messages=[
                 {"role": "system", "content": 'You are a helpful assistant'},
                 {"role": "user", "content": inputs}
             ]
         )
+        print(f'response : {response}')
         prompt_tokens = response.usage.prompt_tokens
         completion_tokens = response.usage.completion_tokens
         response = response.choices[0].message.content
